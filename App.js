@@ -1,0 +1,23 @@
+const express = require("express");
+require("dotenv").config();
+const app = express();
+const auth = require("./routes/Auth");
+const connectDB = require("./DB/Connect");
+const { addChaya } = require("./controllers/Orders");
+app.use(express.json());
+
+app.use("/api/user", auth, addChaya);
+
+const port = 4000;
+
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URL);
+    app.listen(port, () => {
+      console.log(`server is listening at port ${port}`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+start();
