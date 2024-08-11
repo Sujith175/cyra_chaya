@@ -3,10 +3,11 @@ require("dotenv").config();
 const app = express();
 const auth = require("./routes/Auth");
 const connectDB = require("./DB/Connect");
-const { addChaya } = require("./controllers/Orders");
+const addChaya = require("./routes/Order");
 app.use(express.json());
 
-app.use("/api/user", auth, addChaya);
+app.use("/api/user", auth);
+app.use("/api/orders", addChaya);
 
 const port = 4000;
 
