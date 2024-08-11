@@ -66,9 +66,7 @@ const getOrder = async (req, res) => {
       return prevValue + currValue.amount;
     }, 0);
 
-    res
-      .status(200)
-      .json({ success: true, data: result }, { totalAmount: final });
+    res.status(200).json({ success: true, data: result, totalAmount: final });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
