@@ -14,21 +14,73 @@ const addPrice = async (req, res) => {
     });
     res.status(201).json({ success: true, data: result });
   } catch (error) {
-    res.status(500).json({ msg: error });
+    res.status(500).json({ success: false, msg: error });
   }
 };
 
-const addChaya = (req, res) => {
-  const { name, ordered_by } = req.body;
+const getPrice = async (req, res) => {
+  try {
+    const result = await Chaya.find({});
 
-  if (!name || !ordered_by) {
+    if (!result) {
+      return res.status(404).json({ msg: "No item " });
+    }
+    res.status(200).json({ data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error });
+  }
+};
+
+const updatePrice = async (req, res) => {
+  try {
+    const { chaya_id } = req.params;
+
+    // Update the Chaya item and get the updated details
+    const chayaDetails = await Chaya.findOneAndUpdate(
+      { _id: chaya_id },
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    // Check if the item was found and updated
+    if (!chayaDetails) {
+      return res.status(404).json({ success: false, msg: "Item Not Found" });
+    }
+
+    // Respond with the updated details
+    res
+      .status(200)
+      .json({ success: true, msg: "Update Successful", chayaDetails });
+  } catch (error) {
+    // Handle any server errors
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+const addChaya = async (req, res) => {
+  const { name, ordered_by, chaya_id } = req.body;
+
+  console.log(name, ordered_by, chaya_id);
+
+  if (!name || !ordered_by || !chaya_id) {
     return res.status(422).json({ error: "Please add the Fields" });
   }
+
+  const chayaItem = await Chaya.findById(chaya_id);
+
+  if (!chayaItem) {
+    return res.status(404).json({ msg: "Chaya item not found" });
+  }
+
+  console.log(chayaItem.price);
 
   const order = new Orders({
     name,
     ordered_by,
-    amount: 10,
+    amount: chayaItem.price,
     time: new Date().toLocaleTimeString("en-US"),
   });
   order
@@ -77,4 +129,6 @@ module.exports = {
   addChaya,
   getOrder,
   addPrice,
+  getPrice,
+  updatePrice,
 };

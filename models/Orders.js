@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const { ObjectId } = mongoose.Schema.Types;
 
 const OrdersSchema = new mongoose.Schema(
@@ -10,11 +11,11 @@ const OrdersSchema = new mongoose.Schema(
     ordered_by: {
       type: ObjectId,
       ref: "User",
-      required: true,
+      required: false,
     },
     amount: {
       type: Number,
-      required: false,
+      required: true,
     },
     time: {
       type: String,
