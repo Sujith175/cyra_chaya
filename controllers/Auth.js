@@ -21,7 +21,7 @@ const login = (req, res) => {
             process.env.JWT_SECRET
           );
           const { _id, name } = savedUser;
-          res.json({ token, user: { _id, name } });
+          res.json({ token, user: { _id, name, userStatus } });
         } else {
           return res.status(422).json({ error: "Invalid Credentials" });
         }
@@ -49,6 +49,7 @@ const signUp = (req, res) => {
         const user = new User({
           email,
           name,
+          userStatus,
           password: hashedPassword,
         });
         user

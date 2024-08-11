@@ -4,8 +4,11 @@ const app = express();
 const auth = require("./routes/Auth");
 const connectDB = require("./DB/Connect");
 const addChaya = require("./routes/Order");
+const admin = require("./routes/Admin");
+
 app.use(express.json());
 
+app.use("/api/admin", admin);
 app.use("/api/user", auth);
 app.use("/api/orders", addChaya);
 

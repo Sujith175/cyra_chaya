@@ -14,4 +14,5 @@ router.get("/getchaya/:user_Id", getOrder);
 router.post("/addprice", addPrice);
 router.get("/getprice", getPrice);
 router.patch("/updateprice/:chaya_id", updatePrice);
+
 module.exports = router;

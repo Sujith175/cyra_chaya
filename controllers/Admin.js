@@ -1,0 +1,48 @@
+const Orders = require("../models/Orders");
+const User = require("../models/user");
+const mongoose = require("mongoose");
+
+const getUsers = async (req, res) => {
+  try {
+    const userDetails = await User.find({});
+    if (!userDetails) {
+      return res.status(400).json({
+        msg: "Can't get user Information right now, Please try again later",
+      });
+    }
+    res.status(200).json({ success: true, data: userDetails });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error });
+  }
+};
+
+const clearOrder = async (req, res) => {
+  try {
+    const { user_Id } = req.params;
+
+    if (!user_Id) {
+      return res.status(400).json({ msg: "Please Pass a valid ID" });
+    }
+
+    // Convert user_Id to an ObjectId
+    const objectId = new mongoose.Types.ObjectId(user_Id);
+
+    const result = await Orders.deleteMany({ ordered_by: objectId });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ msg: `No orders found for user ID ${user_Id}` });
+    }
+    res
+      .status(200)
+      .json({ msg: `Successfully deleted ${result.deletedCount} orders` });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+module.exports = {
+  getUsers,
+  clearOrder,
+};

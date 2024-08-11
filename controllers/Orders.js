@@ -2,6 +2,7 @@ const Chaya = require("../models/Chaya");
 const Orders = require("../models/Orders");
 const mongoose = require("mongoose");
 
+//add price
 const addPrice = async (req, res) => {
   try {
     const { category, price } = req.body;
@@ -17,7 +18,7 @@ const addPrice = async (req, res) => {
     res.status(500).json({ success: false, msg: error });
   }
 };
-
+//get price
 const getPrice = async (req, res) => {
   try {
     const result = await Chaya.find({});
@@ -30,12 +31,11 @@ const getPrice = async (req, res) => {
     res.status(500).json({ success: false, error: error });
   }
 };
-
+//update price
 const updatePrice = async (req, res) => {
   try {
     const { chaya_id } = req.params;
 
-    // Update the Chaya item and get the updated details
     const chayaDetails = await Chaya.findOneAndUpdate(
       { _id: chaya_id },
       req.body,
@@ -45,26 +45,20 @@ const updatePrice = async (req, res) => {
       }
     );
 
-    // Check if the item was found and updated
     if (!chayaDetails) {
       return res.status(404).json({ success: false, msg: "Item Not Found" });
     }
-
-    // Respond with the updated details
     res
       .status(200)
       .json({ success: true, msg: "Update Successful", chayaDetails });
   } catch (error) {
-    // Handle any server errors
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
+//add order
 const addChaya = async (req, res) => {
   const { name, ordered_by, chaya_id } = req.body;
-
   console.log(name, ordered_by, chaya_id);
-
   if (!name || !ordered_by || !chaya_id) {
     return res.status(422).json({ error: "Please add the Fields" });
   }
@@ -92,13 +86,13 @@ const addChaya = async (req, res) => {
       console.log(err);
     });
 };
-
+//get order details
 const getOrder = async (req, res) => {
   try {
     const { user_Id } = req.params;
 
     if (!user_Id) {
-      return re.status(400).json({ msg: "Please Pass a valid ID" });
+      return res.status(400).json({ msg: "Please Pass a valid ID" });
     }
     // Convert user_Id to an ObjectId
     const objectId = new mongoose.Types.ObjectId(user_Id);
@@ -120,7 +114,6 @@ const getOrder = async (req, res) => {
 
     res.status(200).json({ success: true, data: result, totalAmount: final });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
 };
