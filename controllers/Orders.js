@@ -1,5 +1,22 @@
+const Chaya = require("../models/Chaya");
 const Orders = require("../models/Orders");
 const mongoose = require("mongoose");
+
+const addPrice = async (req, res) => {
+  try {
+    const { category, price } = req.body;
+    if (!category || !price) {
+      return res.status(422).json({ error: "Please add the Fields" });
+    }
+    const result = await Chaya.create({
+      category: category,
+      price: price,
+    });
+    res.status(201).json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
+};
 
 const addChaya = (req, res) => {
   const { name, ordered_by } = req.body;
@@ -49,8 +66,7 @@ const getOrder = async (req, res) => {
       return prevValue + currValue.amount;
     }, 0);
 
-    const data = [...result, { totalAmount: final }];
-    res.status(200).json({ success: true, data: data });
+    res.status(200).json({ success: true, data: result, totalAmount: final });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
@@ -60,4 +76,5 @@ const getOrder = async (req, res) => {
 module.exports = {
   addChaya,
   getOrder,
+  addPrice,
 };
