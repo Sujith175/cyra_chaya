@@ -44,7 +44,7 @@ const signUp = (req, res) => {
         .json({ error: "User Already Exists with that email" });
     }
     bcrypt
-      .hash(password, 13)
+      .hash(password, 2)
       .then((hashedPassword) => {
         const user = new User({
           email,

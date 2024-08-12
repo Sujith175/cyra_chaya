@@ -58,7 +58,7 @@ const updatePrice = async (req, res) => {
 //add order
 const addChaya = async (req, res) => {
   const { name, ordered_by, chaya_id } = req.body;
-  console.log(name, ordered_by, chaya_id);
+
   if (!name || !ordered_by || !chaya_id) {
     return res.status(422).json({ error: "Please add the Fields" });
   }
