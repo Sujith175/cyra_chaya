@@ -32,12 +32,12 @@ const login = (req, res) => {
   });
 };
 
-const signUp = (req, res) => {
+const signUp = async (req, res) => {
   const { name, email, password } = req.body;
   if (!email || !name || !password) {
     return res.status(422).json({ error: "Please add all the Fields" });
   }
-  User.findOne({ email: email }).then((savedUser) => {
+  await User.findOne({ email: email }).then((savedUser) => {
     if (savedUser) {
       return res
         .status(422)
