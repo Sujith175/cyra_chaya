@@ -47,10 +47,12 @@ const signUp = async (req, res) => {
         .json({ error: "User Already Exists with that email" });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10); // Encrypting the password with a salt of 10 rounds
+
     const user = new User({
       email,
       name,
-      password,
+      password: hashedPassword, // Storing the hashed password
     });
 
     await user.save();
