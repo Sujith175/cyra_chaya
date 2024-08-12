@@ -43,25 +43,19 @@ const signUp = (req, res) => {
         .status(422)
         .json({ error: "User Already Exists with that email" });
     }
-    bcrypt
-      .hash(password, 2)
-      .then((hashedPassword) => {
-        const user = new User({
-          email,
-          name,
-          userStatus,
-          password: hashedPassword,
-        });
-        user
-          .save()
-          .then(() => {
-            res.json({ message: "User Added Successfuly" });
-          })
-          .catch((error) => console.log(error));
+
+    const user = new User({
+      email,
+      name,
+      password,
+    });
+
+    user
+      .save()
+      .then(() => {
+        res.json({ message: "User Added Successfully" });
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   });
 };
 
