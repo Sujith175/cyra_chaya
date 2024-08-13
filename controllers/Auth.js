@@ -8,12 +8,12 @@ const login = async (req, res) => {
     if (!email || !password) {
       return res
         .status(422)
-        .json({ error: "Please Provide email or password" });
+        .json({ message: "Please Provide email or password" });
     }
 
     const savedUser = await User.findOne({ email: email });
     if (!savedUser) {
-      return res.status(422).json({ error: "Invalid Credentials" });
+      return res.status(422).json({ message: "Invalid Credentials" });
     }
 
     const doMatch = await bcrypt.compare(password, savedUser.password);
@@ -24,11 +24,11 @@ const login = async (req, res) => {
       const { _id, name, userStatus } = savedUser;
       return res.json({ token, user: { _id, name, userStatus } });
     } else {
-      return res.status(422).json({ error: "Invalid Credentials" });
+      return res.status(422).json({ message: "Invalid Credentials" });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -44,7 +44,7 @@ const signUp = async (req, res) => {
     if (savedUser) {
       return res
         .status(422)
-        .json({ error: "User Already Exists with that email" });
+        .json({ message: "User Already Exists with that email" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10); // Encrypting the password with a salt of 10 rounds
@@ -60,7 +60,7 @@ const signUp = async (req, res) => {
     res.json({ message: "User Added Successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
