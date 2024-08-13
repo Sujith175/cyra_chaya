@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
+  activeUser: {
+    type: "String",
+    default: "active",
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);

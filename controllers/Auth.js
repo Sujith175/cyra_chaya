@@ -53,6 +53,7 @@ const signUp = async (req, res) => {
       email,
       name,
       password: hashedPassword, // Storing the hashed password
+      activeUser,
     });
 
     await user.save();
