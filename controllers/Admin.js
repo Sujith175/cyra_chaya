@@ -42,7 +42,36 @@ const clearOrder = async (req, res) => {
   }
 };
 
+const changeStatus = async (req, res) => {
+  try {
+    const { user_Id } = req.params;
+
+    if (!user_Id) {
+      return res.status(400).json({ msg: "Please provide a valid ID" });
+    }
+
+    const userStatus = await User.findOneAndUpdate(
+      { _id: user_Id },
+      { activeUser: "inActive" },
+      { new: true, runValidators: true }
+    );
+
+    if (!userStatus) {
+      return res
+        .status(404)
+        .json({ success: false, msg: "Cannot update, please check the ID" });
+    }
+
+    res
+      .status(200)
+      .json({ success: true, msg: "Update successful", userStatus });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = {
   getUsers,
   clearOrder,
+  changeStatus,
 };

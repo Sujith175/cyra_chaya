@@ -34,7 +34,7 @@ const login = async (req, res) => {
 
 const signUp = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, activeUser } = req.body;
 
     if (!email || !name || !password) {
       return res.status(422).json({ error: "Please add all the Fields" });
