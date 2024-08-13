@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
     default: "user",
   },
   activeUser: {
-    type: "String",
+    type: String,
     default: "active",
   },
 });
