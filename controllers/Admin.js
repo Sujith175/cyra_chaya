@@ -70,8 +70,40 @@ const changeStatus = async (req, res) => {
   }
 };
 
+const getOrders = async (req, res) => {
+  try {
+    const orderDetails = await Orders.find({});
+
+    if (!orderDetails || orderDetails.length === 0) {
+      return res.status(404).json({
+        msg: "Sorry, Orders Not Found",
+      });
+    }
+
+    const orders = orderDetails.map((order) => {
+      const { _id: orderId, name, ordered_by, time, createdAt } = order;
+      return {
+        orderId,
+        name,
+        ordered_by,
+        time,
+        createdAt,
+      };
+    });
+
+    res.status(200).json({
+      success: true,
+      data: orders,
+      totalCount: orderDetails.length,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = {
   getUsers,
   clearOrder,
   changeStatus,
+  getOrders,
 };
