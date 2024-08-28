@@ -70,13 +70,26 @@ const changeStatus = async (req, res) => {
   }
 };
 
-const getOrders = async (req, res) => {
+const getOrdersOnTime = async (req, res) => {
   try {
-    const orderDetails = await Orders.find({});
+    // Get the start and end of today's date
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    // Find orders created between the start and end of today's date
+    const orderDetails = await Orders.find({
+      createdAt: {
+        $gte: startOfDay,
+        $lte: endOfDay,
+      },
+    });
 
     if (!orderDetails || orderDetails.length === 0) {
       return res.status(404).json({
-        msg: "Sorry, Orders Not Found",
+        msg: "Sorry, There are no orders for today",
       });
     }
 
@@ -105,5 +118,5 @@ module.exports = {
   getUsers,
   clearOrder,
   changeStatus,
-  getOrders,
+  getOrdersOnTime,
 };

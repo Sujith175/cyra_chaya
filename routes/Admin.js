@@ -3,7 +3,7 @@ const {
   getUsers,
   clearOrder,
   changeStatus,
-  getOrders,
+  getOrdersOnTime,
 } = require("../controllers/Admin");
 
 const router = express.Router();
@@ -11,6 +11,6 @@ const router = express.Router();
 router.get("/getusers", getUsers);
 router.delete("/clearorder/:user_Id", clearOrder);
 router.patch("/changestatus/:user_Id", changeStatus);
-router.get("/getorders", getOrders);
+router.get("/getordersontime", getOrdersOnTime);
 
 module.exports = router;
